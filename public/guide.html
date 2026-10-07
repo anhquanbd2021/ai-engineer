@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Guide to the Ai Engineer Lab — how the cap-chain staircase works and what the eight-event deck proves.">
+<title>Ai Engineer Lab Guide</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap">
+<link rel="stylesheet" href="/styles.css">
+<!-- pb-shell --><link rel="stylesheet" href="./pb-shell.css"><!-- pb-shell --><!-- pb-back --><link rel="stylesheet" href="./pb-back.css"><!-- pb-back --></head>
+<body>
+<a class="skip-link" href="#guide">Skip to the guide</a>
+<main id="guide">
+  <nav aria-label="Primary"><a href="/">Lab</a><a aria-current="page" href="/guide.html">Guide</a><a href="https://github.com/anhquanbd2021/ai-engineer">Source</a></nav>
+
+  <header class="guide-intro">
+    <p class="eyebrow">Flight manual · reference pages</p>
+    <h1>Four stages, one cap chain</h1>
+    <p class="lede">Every roadmap stage claims a skill. What it can actually deliver is capped by the stage beneath it — this page maps each control to the failure it reproduces.</p>
+    <p class="warning"><strong>Honest limits.</strong> Thresholds and the +30 rise are model choices, not measurements. The claim is the shape: a skipped step sags everything above it.</p>
+  </header>
+
+  <section class="panel">
+    <p class="eyebrow">Start here</p>
+    <h2>What this demo proves</h2>
+    <p>Choose <em>Skip the basics</em> — Basics 10, everything else 95 — then <strong>Run the demo</strong>: both rehearsed events pass. Now <strong>Ship it</strong>: the deck walks all eight production events and the build collapses on <code>retry-storm</code>, the first event defended by a stage you skipped. Three undefended events stamp the run <strong>CRASHED</strong>.</p>
+    <p><a class="try" href="/">Open the lab</a></p>
+  </section>
+
+  <section class="guide-section">
+    <p class="eyebrow">The controls</p>
+    <h2>Features and what each one proves</h2>
+    <div class="control-grid">
+      <article class="panel control"><span class="control-number">01</span><h3>Claimed-skill sliders</h3><p>Four sliders set what each stage <em>claims</em> — the number on the roadmap checklist.</p><dl><dt>Proves</dt><dd>a claim is not competence — the staircase re-grades every claim.</dd><dt>Key detail</dt><dd>sliders clamp 0–100; changing one re-runs the whole cap chain.</dd></dl></article>
+      <article class="panel control"><span class="control-number">02</span><h3>The cap chain</h3><p><code>effective[i] = min(claimed[i], effective[i-1] + 30)</code> — each step's real height is capped by the step below.</p><dl><dt>Proves</dt><dd>a skipped stage sags every stage above it, not just itself.</dd><dt>Key detail</dt><dd>Basics 10 → LLMs cap 40 → RAG cap 70 → Agents cap 100; claimed 95 meets a hollow middle.</dd></dl></article>
+      <article class="panel control"><span class="control-number">03</span><h3>Hollow steps</h3><p>Where claimed exceeds the cap, the step renders as a dashed outline — it cannot hold weight.</p><dl><dt>Proves</dt><dd>top-heavy builds look tall and stand on nothing.</dd><dt>Key detail</dt><dd><code>sag = claimed − effective</code> is printed on each step.</dd></dl></article>
+      <article class="panel control"><span class="control-number">04</span><h3>Run the demo</h3><p>Walks only <code>schema-drift</code> and <code>stale-chunk</code> — the rehearsed events.</p><dl><dt>Proves</dt><dd>a rehearsed happy path passes on a top-heavy build every time.</dd><dt>Key detail</dt><dd>both events are defended by stages the preset maxed.</dd></dl></article>
+      <article class="panel control"><span class="control-number">05</span><h3>Ship it</h3><p>Walks the full eight-event deck; each event is defended by exactly one stage's effective skill.</p><dl><dt>Proves</dt><dd>production supplies the events the demo never rehearsed.</dd><dt>Key detail</dt><dd><code>retry-storm</code> (basics, threshold 40) is where a skipped floor first gives way.</dd></dl></article>
+      <article class="panel control"><span class="control-number">06</span><h3>The CRASHED stamp</h3><p>The ship absorbs two undefended events; the third flips the verdict.</p><dl><dt>Proves</dt><dd>production tolerates near-misses — it does not tolerate a missing floor.</dd><dt>Key detail</dt><dd><code>SHIP_BUDGET = 3</code>; <code>crashedAt</code> records the first breach.</dd></dl></article>
+    </div>
+  </section>
+
+  <section class="guide-section">
+    <p class="eyebrow">Architecture</p>
+    <h2>How the lab is built</h2>
+    <div class="table-wrap panel" tabindex="0" role="region" aria-label="Architecture table — layer, behavior, evidence">
+      <table>
+        <thead><tr><th>Layer</th><th>Behavior</th><th>Evidence</th></tr></thead>
+        <tbody>
+          <tr><td>Model</td><td>The cap chain, the event deck, demo and ship runs — pure functions shared by browser, CLI, and tests.</td><td><code>public/lab.mjs</code></td></tr>
+          <tr><td>UI</td><td>Sliders, staircase rendering, and the event-walk animation.</td><td><code>public/app.js</code></td></tr>
+          <tr><td>Server</td><td>Zero-dependency static host plus <code>/health</code>, <code>/version</code>, and <code>/api/assess</code>.</td><td><code>app/server.js</code></td></tr>
+          <tr><td>CLI</td><td>Prints claimed vs effective per stage, then demo and ship results per preset.</td><td><code>scripts/staircase.mjs</code></td></tr>
+          <tr><td>Tests</td><td>Unit suite over the cap chain; e2e boots the server and drives the failure mode over HTTP.</td><td><code>test/</code></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="guide-section">
+    <p class="eyebrow">Run locally</p>
+    <h2>Inspect the evidence</h2>
+    <pre class="code-block">npm test            # cap-chain unit tests + server e2e
+npm run staircase   # CLI: claimed vs effective for every preset
+npm run check       # tests
+npm start           # serve the lab on :3000</pre>
+    <p>Or ask the server directly: <code>/api/assess?basics=10&amp;llms=95&amp;rag=95&amp;agents=95</code> returns the full ladder plus both verdicts.</p>
+  </section>
+
+  <section class="guide-section panel">
+    <p class="eyebrow">Limits</p>
+    <h2>What this demo does not claim</h2>
+    <ul>
+      <li>Skill scores and thresholds are illustrative, not measured.</li>
+      <li>The +30 rise is a modeling choice; real dependencies between skills aren't linear.</li>
+      <li>Each event is defended by exactly one stage — real incidents span layers.</li>
+      <li>A <strong>SHIPPED</strong> verdict means the deck was survived, not that a system is correct.</li>
+    </ul>
+    <p><a class="try" href="/">Return to Lab</a></p>
+  </section>
+</main>
+<!-- pb-shell --><a class="pb-shell" href="https://github.com/anhquanbd2021/ai-engineer" title="ai-engineer — an Article Playbook demo (view source)"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="2" y="2" width="9" height="9" rx="2" fill="#2dd4bf"/><rect x="13" y="2" width="9" height="9" rx="2" fill="#2dd4bf" opacity=".45"/><rect x="2" y="13" width="9" height="9" rx="2" fill="#2dd4bf" opacity=".45"/><rect x="13" y="13" width="9" height="9" rx="4.5" fill="#2dd4bf"/></svg><b>ai-engineer</b><i>DEMO</i></a><!-- pb-shell --><!-- pb-back --><a class="pb-back" id="pb-back" href="https://github.com/anhquanbd2021/ai-engineer" title="Back to the article — ai-engineer">← Article <i>PLAYBOOK</i></a><script>(function(){var a=document.getElementById('pb-back');if(!a)return;var h=location.hostname;if(/^(localhost|127\.0\.0\.1|192\.168\.|10\.|172\.(1[6-9]|2[0-9]|3[01])\.)/.test(h)){a.href='//'+h+':'+(/^(localhost|127\.0\.0\.1)$/.test(h)?'1234':'30082')+'/microsites/article.html?slug=ai-engineer';}})();</script><!-- pb-back --></body>
+</html>

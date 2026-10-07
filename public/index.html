@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Ai Engineer Lab — a cap-chain staircase where each roadmap stage's effective skill is capped by the stage beneath it.">
+  <title>Ai Engineer Lab — the cap-chain staircase</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap">
+  <link rel="stylesheet" href="/styles.css">
+<!-- pb-shell --><link rel="stylesheet" href="./pb-shell.css"><!-- pb-shell --><!-- pb-back --><link rel="stylesheet" href="./pb-back.css"><!-- pb-back --></head>
+<body>
+<a class="skip-link" href="#lab">Skip to the lab</a>
+<main id="lab">
+  <nav aria-label="Primary"><a aria-current="page" href="/">Lab</a><a href="/guide.html">Guide</a><a href="https://github.com/anhquanbd2021/ai-engineer">Source</a></nav>
+  <header class="hero">
+    <div>
+      <p class="eyebrow">Ai Engineer Lab · 4 stages, 8 flight events</p>
+      <h1>The roadmap is a staircase.<br>Every step is load-bearing.</h1>
+      <p class="lede">Set the <em>claimed</em> skill for each stage. The staircase draws <em>effective</em> skill — each step capped at the step below it plus 30. Then run the rehearsed demo and ship the full eight-event deck.</p>
+    </div>
+    <p class="warning"><strong>Educational model.</strong> A deterministic simulation of how skipped foundations surface in production — no real models are called, nothing is deployed.</p>
+  </header>
+
+  <section class="panel controls" aria-labelledby="config-title">
+    <div class="section-heading">
+      <div><p class="eyebrow">Flight manual · Section 1</p><h2 id="config-title">Claimed skill per stage</h2></div>
+    </div>
+    <div class="preset-row" role="group" aria-label="Crew presets">
+      <button type="button" class="preset" data-preset="balanced">Balanced climb</button>
+      <button type="button" class="preset" data-preset="frontier">Frontier team</button>
+      <button type="button" class="preset danger" data-preset="skipFoundations">Skip the basics</button>
+    </div>
+    <div class="slider-grid" id="slider-grid" role="group" aria-label="Claimed skill sliders"></div>
+    <p class="muted">Drag a slider: the staircase re-draws effective skill instantly. A step whose claimed height exceeds <code>below + 30</code> renders hollow — it cannot hold weight.</p>
+  </section>
+
+  <section class="workspace" aria-label="Cap-chain staircase and flight log">
+    <section class="panel" aria-labelledby="stair-title">
+      <div class="section-heading">
+        <div><p class="eyebrow">Flight manual · Section 2</p><h2 id="stair-title">The staircase</h2></div>
+        <span id="cap-note" class="badge" role="status" aria-live="polite">claimed = effective</span>
+      </div>
+      <ol id="staircase" class="staircase" aria-label="Effective skill per stage"></ol>
+      <p class="muted">Solid fill = effective skill. Dashed outline = the claimed height the cap removed.</p>
+    </section>
+    <section class="panel" aria-labelledby="deck-title">
+      <div class="section-heading">
+        <div><p class="eyebrow">Flight manual · Section 3</p><h2 id="deck-title">The eight-event deck</h2></div>
+        <span id="verdict" class="badge" role="status" aria-live="polite">—</span>
+      </div>
+      <div class="action-row" role="group" aria-label="Run actions">
+        <button id="run-demo" type="button">Run the demo</button>
+        <button id="run-ship" type="button">Ship it</button>
+      </div>
+      <ol id="event-log" class="events" aria-label="Production event log"></ol>
+      <p class="muted">The demo walks the two rehearsed events. Shipping walks all eight — three undefended events flip the verdict to <strong>CRASHED</strong>.</p>
+    </section>
+  </section>
+
+  <p class="closing-links"><a href="/guide.html">Read the stage-by-stage guide</a><span class="sep" aria-hidden="true">·</span><a href="https://github.com/anhquanbd2021/ai-engineer">Inspect source and tests</a></p>
+</main>
+<script type="module" src="/app.js"></script>
+<!-- pb-shell --><a class="pb-shell" href="https://github.com/anhquanbd2021/ai-engineer" title="ai-engineer — an Article Playbook demo (view source)"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="2" y="2" width="9" height="9" rx="2" fill="#2dd4bf"/><rect x="13" y="2" width="9" height="9" rx="2" fill="#2dd4bf" opacity=".45"/><rect x="2" y="13" width="9" height="9" rx="2" fill="#2dd4bf" opacity=".45"/><rect x="13" y="13" width="9" height="9" rx="4.5" fill="#2dd4bf"/></svg><b>ai-engineer</b><i>DEMO</i></a><!-- pb-shell --><!-- pb-back --><a class="pb-back" id="pb-back" href="https://github.com/anhquanbd2021/ai-engineer" title="Back to the article — ai-engineer">← Article <i>PLAYBOOK</i></a><script>(function(){var a=document.getElementById('pb-back');if(!a)return;var h=location.hostname;if(/^(localhost|127\.0\.0\.1|192\.168\.|10\.|172\.(1[6-9]|2[0-9]|3[01])\.)/.test(h)){a.href='//'+h+':'+(/^(localhost|127\.0\.0\.1)$/.test(h)?'1234':'30082')+'/microsites/article.html?slug=ai-engineer';}})();</script><!-- pb-back --></body>
+</html>
